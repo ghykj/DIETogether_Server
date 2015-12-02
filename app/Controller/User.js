@@ -28,6 +28,7 @@ module.exports.addUser = function(req, res){
     else{
       response.code = 200;
       response.data = "addUser OK";
+      response.user = newUser;
     }
     res.json(response);
   });
