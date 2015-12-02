@@ -1,5 +1,27 @@
 var User = require('../Model/User');
 
+module.exports.getUserById = function(req, res){
+  console.log("request method : " + req.method);
+  console.log("user.getUserById() is called!");
+
+  var response = {};
+  var getUser = new User();
+  var id = req.params.id;
+
+  getUser.getUserById(id, function(err, result){
+    if(err){
+      response.code = 400;
+      response.data = "getUserById Fail";
+    }
+    else{
+      response.code = 200;
+      response.user = result;
+    }
+    res.json(response);
+  });
+  delete getUser;
+};
+
 module.exports.addUser = function(req, res){
 
   console.log("request method : " + req.method);

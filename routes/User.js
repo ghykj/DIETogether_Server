@@ -9,6 +9,7 @@ router.get('/', function(req, res) {
   });
 });
 
+router.get('/:id', User.getUserById);
 router.post('/', User.addUser);
 
 module.exports = router;
