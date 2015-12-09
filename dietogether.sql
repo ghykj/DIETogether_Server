@@ -10,3 +10,11 @@ CREATE TABLE `dietogether`.`user` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE `dietogether`.`friendship` (
+  `id` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
+  'friends' JSON,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;

@@ -1,7 +1,7 @@
 var connection = require('../../lib/connection');
 var async = require('async');
-//Constructor
 
+//Constructor
 function User() {
   this.id = "";
   this.name = "";
@@ -9,6 +9,71 @@ function User() {
   this.age = 0;
   this.height = 0;
   this.weight = 0;
+};
+
+User.prototype.getMyFriendsInfo = function(my_id, callback){
+  console.log("i will get my friends info");
+  console.log("my_id : " + my_id);
+  async.waterfall([
+    function(callback){
+      connection.getConnection(function(err, connection){
+        callback(null, connection);
+      });
+    },
+    function(connection, callback){
+      connection.query("SELECT * FROM friendship WHERE id = ?", my_id, function(query_error, query_result){
+        console.log("release connection!")
+        connection.release();
+        if(query_error){
+          console.log("query error : " + query_error);
+        }
+        callback(JSON.parse(JSON.stringify(query_error)), query_result);
+      });
+    }
+  ],
+  function(async_waterfall_error, getMyFriendsInfo_result){
+    callback(async_waterfall_error, getMyFriendsInfo_result);
+  });
+};
+
+User.prototype.addfriend = function(parameter, callback){
+
+  console.log("addfriend! parameter!")
+  console.log(parameter);
+
+  var new_friend = {
+    id: parameter.friend_id,
+    name: parameter.friend_name
+  };
+  parameter.my_friends_list.push(new_friend);
+
+  var input_data = {
+    friend_num: parameter.my_friend_num + 1,
+    friend_list: parameter.my_friends_list
+  };
+
+  async.waterfall([
+    function(callback){
+      connection.getConnection(function(err, connection){
+        callback(null, connection);
+      });
+    },
+    function(connection, callback){
+      connection.query("UPDATE friendship set friends = ? WHERE id = ?",
+        [JSON.stringify(input_data), parameter.my_id],
+        function(query_error, query_result){
+          console.log("release connection!")
+          connection.release();
+          if(query_error){
+            console.log("query error : " + query_error);
+          }
+          callback(JSON.parse(JSON.stringify(query_error)), query_result);
+        });
+    }
+  ],
+  function(async_waterfall_error, addfriend_result){
+    callback(async_waterfall_error, addfriend_result);
+  });
 };
 
 User.prototype.getUserByName = function(name, callback){
@@ -30,8 +95,8 @@ User.prototype.getUserByName = function(name, callback){
       });
     }
   ],
-  function(async_waterfall_error, getUserById_result){
-    callback(async_waterfall_error, getUserById_result);
+  function(async_waterfall_error, getUserByName_result){
+    callback(async_waterfall_error, getUserByName_result);
   });
 };
 
@@ -71,15 +136,31 @@ User.prototype.addUser = function(newUser, callback){
         callback(null, connection);
       });
     },
+    //insert into friendship values(NEW.id, NEW.name, '{"friends_num": "0", "friends_list": "[]"}');
     function(connection, callback){
       connection.query('INSERT INTO user SET ?', newUser, function(query_error, query_result){
-        console.log("release connection!")
-        connection.release();
+        //console.log("release connection!")
+        //connection.release();
         if(query_error){
           console.log("query error : " + query_error);
         }
-        callback(JSON.parse(JSON.stringify(query_error)), query_result);
+        //console.log(query_result);
+        callback(JSON.parse(JSON.stringify(query_error)), connection);
       }); //connection.query();
+    },
+    function(connection, callback){
+      var new_list = [];
+      var init_friend = {
+        friend_num: 0,
+        friend_list: new_list
+      }
+      connection.query("INSERT INTO friendship VALUES(?, ?, ?)", [newUser.id, newUser.name, JSON.stringify(init_friend)], function(query_error, query_result){
+          if(query_error){
+            console.log("query error in insert friendship");
+            console.log(query_error)
+          }
+          callback(JSON.parse(JSON.stringify(query_error)), query_result);
+      });
     }
   ],
   function(async_waterfall_error, adduser_result){
