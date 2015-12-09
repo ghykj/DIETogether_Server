@@ -46,9 +46,7 @@ User.prototype.addfriend = function(parameter, callback){
     name: parameter.friend_name
   };
   parameter.my_friends_list.push(new_friend);
-
   var input_data = {
-    friend_num: parameter.my_friend_num + 1,
     friend_list: parameter.my_friends_list
   };
 
@@ -136,22 +134,17 @@ User.prototype.addUser = function(newUser, callback){
         callback(null, connection);
       });
     },
-    //insert into friendship values(NEW.id, NEW.name, '{"friends_num": "0", "friends_list": "[]"}');
     function(connection, callback){
       connection.query('INSERT INTO user SET ?', newUser, function(query_error, query_result){
-        //console.log("release connection!")
-        //connection.release();
         if(query_error){
           console.log("query error : " + query_error);
         }
-        //console.log(query_result);
         callback(JSON.parse(JSON.stringify(query_error)), connection);
       }); //connection.query();
     },
     function(connection, callback){
       var new_list = [];
       var init_friend = {
-        friend_num: 0,
         friend_list: new_list
       }
       connection.query("INSERT INTO friendship VALUES(?, ?, ?)", [newUser.id, newUser.name, JSON.stringify(init_friend)], function(query_error, query_result){

@@ -26,7 +26,6 @@ module.exports.addfriend = function(req, res, next){
     my_id: req.body.my_id,
     friend_id: req.body.friend_id,
     friend_name: req.body.friend_name,
-    my_friend_num: req.friend_info.friend_num,
     my_friends_list: req.friend_info.friend_list
   }
   console.log(parameter);
