@@ -1,11 +1,36 @@
 var User = require('../Model/User');
 
+
+//이름으로 친구 찾기
+module.exports.getUserByName = function(req, res){
+  console.log("request method : " + req.method);
+  console.log("user.getUserByName() is called!");
+
+  var response = {};
+  var getUser = new User();
+  var name = req.params.name;
+  getUser.getUserByName(name, function(err, result){
+    if(err){
+      response.code = 400;
+      response.data = "getUserByName Fail";
+    }
+    else{
+      response.code = 200;
+      response.user = result;
+    }
+    res.json(response);
+  });
+};
+
+
+//id로 정보조회
 module.exports.getUserById = function(req, res){
   console.log("request method : " + req.method);
   console.log("user.getUserById() is called!");
 
   var response = {};
   var getUser = new User();
+
   var id = req.params.id;
 
   getUser.getUserById(id, function(err, result){
@@ -19,7 +44,7 @@ module.exports.getUserById = function(req, res){
     }
     res.json(response);
   });
-  delete getUser;
+
 };
 
 module.exports.addUser = function(req, res){

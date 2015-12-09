@@ -9,7 +9,10 @@ router.get('/', function(req, res) {
   });
 });
 
-router.get('/:id', User.getUserById);
+//localhost:3333/user
+
+router.get('/id/:id', User.getUserById);
+router.get('/name/:name', User.getUserByName);
 router.post('/', User.addUser);
 
 module.exports = router;
