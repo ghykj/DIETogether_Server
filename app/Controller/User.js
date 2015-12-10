@@ -92,21 +92,21 @@ module.exports.getUserById = function(req, res){
 };
 
 module.exports.addUser = function(req, res){
-
+  
   console.log("request method : " + req.method);
   console.log("user.addUser() is called!");
 
   var response = {};
   var newUser = new User();
 
-	newUser.id = req.body.id;
+  newUser.id = req.body.id;
   newUser.name = req.body.name;
-	newUser.gender = req.body.gender;
+  newUser.gender = req.body.gender;
   newUser.age = req.body.age;
   newUser.height = req.body.height;
   newUser.weight = req.body.weight;
 
-	console.log(newUser);
+  console.log(newUser);
 
   newUser.addUser(newUser, function(error, result){
     if(error){
