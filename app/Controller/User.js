@@ -9,7 +9,7 @@ module.exports.getMyFriendsInfo = function(req, res, next){
       {
         id: 'admin',
         name: '김나정',
-        friends: '{"friends_num": 0, "friends_list": []}'
+        friends: '{"friends_list": []}'
       }
     */
     var friend_info = JSON.parse(result[0].friends);
