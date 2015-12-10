@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+	"start": "forever start -a -o out.log -e err.log ./bin/www"
   },
   "dependencies": {
     "async": "^1.5.0",

@@ -22,6 +22,7 @@ router.get('/user', function(req, res) {
       });
     }
   ], function(err, result){
+	res.header("Content-Type", "application/json; charset=utf-8");
     res.json(result);
   });
 });
@@ -44,6 +45,7 @@ router.get('/health', function(req,res){
       });
     }
   ], function(err, result){
+	res.header("Content-Type", "application/json; charset=utf-8");
     res.json(result);
   });
 });
@@ -88,7 +90,8 @@ router.get('/friendship', function(req,res){
       });
     }
   ], function(err, result){
-    res.json(result);
+    res.header("Content-Type", "application/json; charset=utf-8");
+	res.json(result);
   });
 });
 
