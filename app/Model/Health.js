@@ -56,7 +56,6 @@ Health.prototype.getHealth = function(id, callback){
   ], function(err,result){
     callback(err, result);
   });
-
 };
 
 //오늘 운동 한 정보를 삭제
@@ -86,5 +85,4 @@ Health.prototype.deleteHealth = function(params, callback){
   });
 };
 
-//워킹따로
 module.exports = Health;
